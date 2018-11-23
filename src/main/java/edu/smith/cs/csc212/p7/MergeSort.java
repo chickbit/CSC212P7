@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MergeSort {
+	/**
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
 	public static List<Integer> mergeTwoSorted(List<Integer> A, List<Integer> B) {
 		// list to build
 		List<Integer> C = new ArrayList<Integer>();
@@ -58,6 +64,12 @@ public class MergeSort {
 		return C;
 	}
 
+	/**
+	 * I tried to implement StackOverflowMerge and it didn't work :(
+	 * 
+	 * @param unsorted
+	 * @return
+	 */
 	public static List<Integer> recursiveMergeSort(List<Integer> unsorted) {
 		// Base case
 		if (unsorted.size() == 1 || unsorted.size() == 0) {
@@ -79,6 +91,12 @@ public class MergeSort {
 
 	// logic from https://www.geeksforgeeks.org/iterative-merge-sort/
 	// retrieved nov 8 2018
+	/**
+	 * I tried to implement StackOverflowSort :(
+	 * 
+	 * @param unsorted
+	 * @return
+	 */
 	public static List<Integer> iterativeMergeSort(List<Integer> unsorted) {
 		int chunkSize;
 		int leftStartIndex;
@@ -108,6 +126,7 @@ public class MergeSort {
 				List<Integer> rightChunk = new ArrayList<>(unsorted.subList(mid, leftStartIndex + chunkSize));
 				System.out.println("Left: " + leftChunk.toString());
 				System.out.println("Right: " + rightChunk.toString());
+
 				List<Integer> tempChunk = mergeTwoSorted(leftChunk, rightChunk);
 				System.out.println("Temp: " + tempChunk.toString());
 
@@ -124,5 +143,52 @@ public class MergeSort {
 		}
 
 		return unsorted;
+	}
+
+	// logic from https://www.geeksforgeeks.org/iterative-merge-sort/
+	// retrieved nov 8 2018
+	public static List<Integer> iterativeMergeSort2(List<Integer> unsorted) {
+		int chunkSize;
+		int leftStartIndex;
+		int n = unsorted.size();
+
+		// our working structures: a list of chunks!
+		List<ArrayList<Integer>> chunkList = new ArrayList<ArrayList<Integer>>();
+		List<ArrayList<Integer>> tempChunkList = new ArrayList<ArrayList<Integer>>();
+
+		// split into an ArrayList of ArrayList chunks
+		for (int i = 0; i < unsorted.size(); i++) {
+			// put each element of the original list into its own tiny ArrayList
+			ArrayList<Integer> chunk = new ArrayList<Integer>();
+			chunk.add(unsorted.get(i));
+			chunkList.add(chunk);
+		}
+
+		System.out.println(chunkList.toString());
+
+		// now we can start merging them
+
+		while (chunkList.size() > 1) {
+			System.out.println("Called! chunkList.size() = " + chunkList.size());
+			for (int i = 0; i < chunkList.size(); i += 2) {
+				ArrayList<Integer> chunk;
+				// combine chunk and its neighbor into a new list of chunks until we reach the end
+				if (chunkList.size() - i > 1) {
+					chunk = new ArrayList<>(mergeTwoSorted(chunkList.get(i), chunkList.get(i + 1)));
+				} else {
+					chunk = chunkList.get(i);
+				}
+				System.out.println("chunk = " + chunk.toString());
+				tempChunkList.add(chunk);
+			}
+
+			// reset our lists
+			chunkList = tempChunkList;
+			tempChunkList = new ArrayList<ArrayList<Integer>>();
+			System.out.println(" - chunkList.size() is now " + chunkList.size());
+			System.out.println(chunkList.get(0).toString());
+
+		}
+		return chunkList.get(0);
 	}
 }

@@ -47,4 +47,23 @@ public class TestSorting {
 		Assert.assertTrue(checkSorted(sortMe));
 	}
 
+	@Test
+	public void testSelectionSort() {
+		// See if the data can be reversed:
+		ArrayList<Integer> sortMe = new ArrayList<>();
+		for (int y : data) {
+			sortMe.add(y);
+		}
+		Assert.assertFalse(checkSorted(sortMe));
+		Collections.shuffle(sortMe);
+		sortMe = (ArrayList<Integer>) SelectionSort.selectionSort2(sortMe);
+		Assert.assertTrue(checkSorted(sortMe));
+
+		// For good measure, let's shuffle it and sort it again to see if that works, too.
+		Collections.shuffle(sortMe);
+		sortMe = (ArrayList<Integer>) SelectionSort.selectionSort2(sortMe);
+		Assert.assertTrue(checkSorted(sortMe));
+
+	}
+
 }

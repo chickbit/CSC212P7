@@ -20,7 +20,6 @@ public class BubbleSort {
 	 * @param j     swap the item at this index with the one at i.
 	 */
 	public static void swap(List<Integer> items, int i, int j) {
-		assert (i != j);
 		int tmp = items.get(i);
 		items.set(i, items.get(j));
 		items.set(j, tmp);

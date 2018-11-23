@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TestMerge {
+public class P6MergeTest {
 	/**
 	 * This is useful for testing whether sort algorithms work!
 	 * 
@@ -34,16 +34,16 @@ public class TestMerge {
 	@Test
 	public void testMerge2() {
 		// See if the data can be reversed:
-		ArrayList<Integer> sortMe = new ArrayList<>();
-		ArrayList<Integer> sortMe2 = new ArrayList<>();
+		P6DoublyLinkedList<Integer> sortMe = new P6DoublyLinkedList<Integer>();
+		P6DoublyLinkedList<Integer> sortMe2 = new P6DoublyLinkedList<Integer>();
 		for (int y : data) {
-			sortMe.add(y);
+			sortMe.addBack(y);
 		}
 		for (int y : data2) {
-			sortMe2.add(y);
+			sortMe2.addBack(y);
 		}
 
-		List<Integer> n = MergeSort.mergeTwoSorted(new ArrayList<>(sortMe), new ArrayList<>(sortMe2));
+		List<Integer> n = P6MergeSort.mergeTwoSorted(sortMe.copy(), sortMe2.copy()).copyToList();
 		Assert.assertTrue(n.size() == (data.length + data2.length));
 		Assert.assertTrue(checkSorted(n));
 	}
@@ -51,41 +51,29 @@ public class TestMerge {
 	@Test
 	public void testRecursiveMergeSort() {
 		// See if the data can be reversed:
-		ArrayList<Integer> sortMe = new ArrayList<>();
-		ArrayList<Integer> sortMe2 = new ArrayList<>();
-		ArrayList<Integer> sortMe3 = new ArrayList<>();
+		P6DoublyLinkedList<Integer> sortMe = new P6DoublyLinkedList<Integer>();
+		P6DoublyLinkedList<Integer> sortMe2 = new P6DoublyLinkedList<Integer>();
+		P6DoublyLinkedList<Integer> sortMe3 = new P6DoublyLinkedList<Integer>();
 		for (int y : data) {
-			sortMe.add(y);
-			sortMe3.add(y);
+			sortMe.addBack(y);
+			sortMe3.addBack(y);
 		}
 		for (int y : data2) {
-			sortMe2.add(y);
-			sortMe3.add(y);
+			sortMe2.addBack(y);
+			sortMe3.addBack(y);
 		}
-		Collections.shuffle(sortMe3);
 
-		List<Integer> n = MergeSort.recursiveMergeSort(new ArrayList<>(sortMe3));
-		Assert.assertTrue(n.size() == sortMe3.size());
-		Assert.assertTrue(checkSorted(n));
-	}
+		ArrayList<Integer> temp = (ArrayList<Integer>) sortMe3.copyToList();
+		Collections.shuffle(temp);
 
-	@Test
-	public void testIterativeMergeSort() {
-		// See if the data can be reversed:
-		ArrayList<Integer> sortMe = new ArrayList<>();
-		ArrayList<Integer> sortMe2 = new ArrayList<>();
-		ArrayList<Integer> sortMe3 = new ArrayList<>();
-		for (int y : data) {
-			sortMe.add(y);
-			sortMe3.add(y);
+		for (int y : temp) {
+			sortMe3.removeFront();
+			sortMe3.addBack(y);
 		}
-		for (int y : data2) {
-			sortMe2.add(y);
-			sortMe3.add(y);
-		}
-		Collections.shuffle(sortMe3);
-
-		List<Integer> n = MergeSort.iterativeMergeSort2(new ArrayList<>(sortMe3));
+		P6DoublyLinkedList<Integer> ntemp = P6MergeSort.recursiveMergeSort(sortMe3);
+		List<Integer> n = ntemp.copyToList();
+		System.out.println(ntemp.toString());
+		System.out.println(n.toString());
 		Assert.assertTrue(n.size() == sortMe3.size());
 		Assert.assertTrue(checkSorted(n));
 	}
